@@ -1,19 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-
-// Styled components
-const Test = styled.div`
-    width: 100px;
-    height: 100px;
-    background-color: red;
-`
+import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const IndexPage = () => {
-    return (
-        <div>
-            <Test />
-        </div>
-    )
+    // Redirect to proper page
+    const router = useRouter()
+    useEffect(() => {
+        router.push('/angular')
+    }, [])
+
+    return <></>
 }
 
 export default IndexPage
