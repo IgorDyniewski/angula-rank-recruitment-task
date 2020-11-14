@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components'
 
 // Styles
 import '../styles/globals.css'
+import '../styles/spinner.css'
 
 // theme
 import theme from '../lib/theme'

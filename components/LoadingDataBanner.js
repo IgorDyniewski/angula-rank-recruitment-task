@@ -8,17 +8,18 @@ import Spinner from './Spinner'
 // Styled components
 const MainWrapper = styled.div`
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: 50px;
 `
 const Text = styled.span`
     color: white;
     margin-top: 20px;
     font-size: 15px;
     color: ${(props) => props.theme.colors.textSecondary};
+    text-align: center;
 `
 
 const LoadingDataBanner = (props) => {
