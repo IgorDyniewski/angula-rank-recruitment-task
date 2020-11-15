@@ -6,17 +6,27 @@ export default async function handler(req, res) {
         query: { organizationName },
     } = req
 
-    if (!organizationName) return res.json({ res: false }) // Checking if ogr name id defined
+    if (!organizationName) return res.json({ res: false, err: 'MISSING_DATA' }) // Checking if ogr name id defined
 
     // Init github api
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN,
     })
 
-    const { data: orgRepositories } = await octokit.repos.listForOrg({
-        org: organizationName,
-    })
-    const orgRepositoriesNames = orgRepositories.map((repo) => repo.name) // We have all repo's names for org
+    let isOrgValid = true
+    let orgRepositories = await octokit.repos
+        .listForOrg({
+            org: organizationName,
+        })
+        .catch(() => {
+            console.log('err')
+            res.json({ res: false, err: 'WRONG_ORG' })
+            isOrgValid = false
+            return
+        })
+    if (!isOrgValid) return
+
+    const orgRepositoriesNames = orgRepositories.data.map((repo) => repo.name) // We have all repo's names for org
 
     // Getting all contributors for each repo
     const allContributorsSeparated = await Promise.all(
@@ -29,21 +39,27 @@ export default async function handler(req, res) {
         contributorGroup.forEach((user) => {
             const indexOfUser = allContributors.map((contributor) => contributor.id).indexOf(user.id)
             if (indexOfUser === -1) allContributors.push(user)
-            else allContributors[indexOfUser].contributions += user.contributions
+            else return
         })
     })
 
     // Leaving only necessary user data
     allContributors = allContributors.map((user) => ({
-        id: user.id,
         login: user.login,
-        avatar_url: user.avatar_url,
-        html_url: user.html_url,
         contributions: user.contributions,
     }))
 
+    // Getting details of each user
+    let contributorsWithDetailsPromises = []
+    for (let i = 0; i < allContributors.length; i++) {
+        contributorsWithDetailsPromises.push(
+            _getUserDetails(allContributors[i].login, { contributions: allContributors[i].contributions })
+        )
+    }
+    const contributorsWithDetails = await Promise.all(contributorsWithDetailsPromises)
+
     // Sending user data
-    res.json({ res: true, allContributors: allContributors })
+    res.json({ res: true, allContributors: contributorsWithDetails })
 }
 
 // Get all contributors for repository
@@ -68,4 +84,17 @@ const _getAllContributorsForRepo = async (repoOwner, remoName) => {
     }
 
     return contributors
+}
+
+// Getting user's details
+const _getUserDetails = async (login, additionalData) => {
+    const octokit = new Octokit({
+        auth: process.env.GITHUB_TOKEN,
+    })
+
+    const userDetails = await octokit.request(`GET /users/${login}`, {
+        username: login,
+    })
+
+    return { ...userDetails.data, ...additionalData }
 }

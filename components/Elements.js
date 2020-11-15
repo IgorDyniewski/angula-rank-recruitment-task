@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
+import PropTypes, { array } from 'prop-types'
 
 // Title wrapper
 const TitleWrapperMain = styled.div`
@@ -36,7 +36,7 @@ export const SubTitle = (props) => {
 }
 // Checking types
 SubTitle.propTypes = {
-    children: PropTypes.string.isRequired,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 }
 
 // Button

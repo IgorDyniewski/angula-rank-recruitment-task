@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 // Components
 import LoadingDataBanner from '../components/LoadingDataBanner'
+import ErrorBanner from '../components/ErrorBanner'
 import UserProfileBar from '../components/UserProfileBar'
 import { TitleWrapper, Title, SubTitle, Button } from '../components/Elements'
 
@@ -57,7 +58,7 @@ const TopFixedContent = styled.div`
     width: calc(100vw - 40px);
     max-width: 690px;
     height: calc(100% - 80px);
-    border-bottom: 2px solid ${(props) => props.theme.colors.lightGray};
+    border-bottom: ${(props) => (props.isBorderVisible ? `2px solid ${props.theme.colors.lightGray}` : 'none')};
 `
 const ScrollContentWrapper = styled.div`
     width: 100vw;
@@ -93,8 +94,9 @@ const OrganizationPage = (props) => {
     const { organizationName } = router.query
 
     // States
-    const [isDataFetched, setIsDataFetched] = useState(true)
+    const [isDataFetched, setIsDataFetched] = useState(false)
     const [contributors, setContributors] = useState([])
+    const [isError, setIsError] = useState(false)
 
     // Fetching organization contributors to all organization's repositories
     const _fetchOrganizationContributors = async (organizationName) => {
@@ -110,15 +112,23 @@ const OrganizationPage = (props) => {
             return alert('Error occurred while data fetching')
         }
 
+        // Checking if data is correct(org exists)
+        if (!response.res && response.err) {
+            setIsDataFetched(true)
+            setIsError(true)
+            return
+        }
+
         // We should have all contributors
         setContributors(response.allContributors)
+        console.log(response.allContributors)
         setIsDataFetched(true)
     }
 
     // Fetching / Re-fetching on organization name change
     useEffect(async () => {
         if (!organizationName) return // Checking if router knows org name
-        // _fetchOrganizationContributors(organizationName)
+        _fetchOrganizationContributors(organizationName)
     }, [organizationName])
 
     return (
@@ -135,12 +145,17 @@ const OrganizationPage = (props) => {
                 </LogoWrapper>
 
                 {/* Top fixed content */}
-                <TopFixedContent>
+                <TopFixedContent isBorderVisible={!isError}>
                     {/* Rendering spinner when data is loading  */}
                     {!isDataFetched && <LoadingDataBanner loadingText={'Hold tight! We are cooking up data for you'} />}
 
+                    {/* Rendering error baner in case of error */}
+                    {isDataFetched && isError && (
+                        <ErrorBanner loadingText={'Whoops! We couldn’t find your organization.'} />
+                    )}
+
                     {/* Rendering title and buttons when data is loaded */}
-                    {isDataFetched && (
+                    {isDataFetched && !isError && (
                         <LoadedTopFixedContentWrapper>
                             <TitleWrapper>
                                 <Title>Contributors</Title>
@@ -158,23 +173,18 @@ const OrganizationPage = (props) => {
             <ScrollContentWrapper>
                 <ScrollContent>
                     <PseudoListElement />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
-                    <UserProfileBar />
+                    {contributors.map((contributor, index) => (
+                        <UserProfileBar
+                            key={index}
+                            profilePictureSrc={contributor.avatar_url}
+                            githubUrl={contributor.html_url}
+                            fullName={contributor.name}
+                            contributions={contributor.contributions}
+                            gitHubLogin={contributor.login}
+                            publicGists={contributor.public_gists}
+                            publicRepos={contributor.public_repos}
+                        />
+                    ))}
                 </ScrollContent>
             </ScrollContentWrapper>
         </>
