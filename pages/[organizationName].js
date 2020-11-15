@@ -7,6 +7,7 @@ import LoadingDataBanner from '../components/LoadingDataBanner'
 import ErrorBanner from '../components/ErrorBanner'
 import UserProfileBar from '../components/UserProfileBar'
 import { TitleWrapper, Title, SubTitle, Button } from '../components/Elements'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 // Styled components
 const HeaderBackgroundWrapper = styled.div`
@@ -97,6 +98,7 @@ const OrganizationPage = (props) => {
     const [isDataFetched, setIsDataFetched] = useState(false)
     const [contributors, setContributors] = useState([])
     const [isError, setIsError] = useState(false)
+    const [displayedData, setDisplayedData] = useState([])
 
     // Fetching organization contributors to all organization's repositories
     const _fetchOrganizationContributors = async (organizationName) => {
@@ -121,7 +123,7 @@ const OrganizationPage = (props) => {
 
         // We should have all contributors
         setContributors(response.allContributors)
-        console.log(response.allContributors)
+        setDisplayedData(response.allContributors.slice(0, 20))
         setIsDataFetched(true)
     }
 
@@ -130,6 +132,11 @@ const OrganizationPage = (props) => {
         if (!organizationName) return // Checking if router knows org name
         _fetchOrganizationContributors(organizationName)
     }, [organizationName])
+
+    // Loading more fields
+    const _loadMoreFields = () => {
+        setDisplayedData(displayedData.concat(contributors.slice(displayedData.length, displayedData.length + 10)))
+    }
 
     return (
         <>
@@ -171,21 +178,28 @@ const OrganizationPage = (props) => {
 
             {/* Scroll content */}
             <ScrollContentWrapper>
-                <ScrollContent>
-                    <PseudoListElement />
-                    {contributors.map((contributor, index) => (
-                        <UserProfileBar
-                            key={index}
-                            profilePictureSrc={contributor.avatar_url}
-                            githubUrl={contributor.html_url}
-                            fullName={contributor.name}
-                            contributions={contributor.contributions}
-                            gitHubLogin={contributor.login}
-                            publicGists={contributor.public_gists}
-                            publicRepos={contributor.public_repos}
-                        />
-                    ))}
-                </ScrollContent>
+                {displayedData.length > 0 && (
+                    <InfiniteScroll
+                        dataLength={displayedData.length}
+                        next={_loadMoreFields}
+                        hasMore={displayedData.length < contributors.length}
+                        loader={<h4>Loading...</h4>}
+                    >
+                        <PseudoListElement />
+                        {displayedData.map((contributor, index) => (
+                            <UserProfileBar
+                                key={index}
+                                profilePictureSrc={contributor.avatar_url}
+                                githubUrl={contributor.html_url}
+                                fullName={contributor.name}
+                                contributions={contributor.contributions}
+                                gitHubLogin={contributor.login}
+                                publicGists={contributor.public_gists}
+                                publicRepos={contributor.public_repos}
+                            />
+                        ))}
+                    </InfiniteScroll>
+                )}
             </ScrollContentWrapper>
         </>
     )

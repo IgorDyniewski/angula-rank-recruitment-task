@@ -94,7 +94,7 @@ const UserProfileBar = (props) => {
 UserProfileBar.propTypes = {
     profilePictureSrc: PropTypes.string.isRequired,
     githubUrl: PropTypes.string.isRequired,
-    fullName: PropTypes.string.isRequired,
+    fullName: PropTypes.string,
     contributions: PropTypes.number.isRequired,
     gitHubLogin: PropTypes.string.isRequired,
     publicRepos: PropTypes.number.isRequired,

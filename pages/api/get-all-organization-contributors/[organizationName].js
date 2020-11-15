@@ -1,5 +1,8 @@
 const { Octokit } = require('@octokit/rest')
 
+// Lib
+const fakeData = require('../../../lib/fakeData.json')
+
 export default async function handler(req, res) {
     // Getting org name
     const {
@@ -7,6 +10,13 @@ export default async function handler(req, res) {
     } = req
 
     if (!organizationName) return res.json({ res: false, err: 'MISSING_DATA' }) // Checking if ogr name id defined
+
+    // Mocking API when in dev mode to overcome GitHub API limits
+    if (process.env.MODE === 'DEV') {
+        console.log('Development mode, using fake data...')
+        res.json(fakeData)
+        return
+    }
 
     // Init github api
     const octokit = new Octokit({
@@ -18,8 +28,8 @@ export default async function handler(req, res) {
         .listForOrg({
             org: organizationName,
         })
-        .catch(() => {
-            console.log('err')
+        .catch((err) => {
+            console.log(err)
             res.json({ res: false, err: 'WRONG_ORG' })
             isOrgValid = false
             return
