@@ -61,6 +61,15 @@ const ButtonMain = styled.button`
         outline: none;
     }
 `
+const ButtonText = styled.span`
+    color: ${(props) => props.theme.colors.buttonText};
+    font-size: 14px;
+
+    /* Hiding text on mobile */
+    @media (max-width: ${(props) => (props.hideTextOnMobileScreenWidth ? props.hideTextOnMobileScreenWidth : 0)}px) {
+        display: none;
+    }
+`
 const ButtonIcon = styled.div`
     width: 13px;
     height: 13px;
@@ -69,11 +78,19 @@ const ButtonIcon = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     margin-left: 10px;
+
+    /* Hiding margin on mobile */
+    @media (max-width: ${(props) => (props.hideTextOnMobileScreenWidth ? props.hideTextOnMobileScreenWidth : 0)}px) {
+        margin-left: 0px;
+    }
 `
 export const Button = (props) => {
     return (
         <ButtonMain {...props}>
-            {props.children} {props.icon && <ButtonIcon src={props.iconSrc} />}
+            <ButtonText hideTextOnMobileScreenWidth={props.hideTextOnMobileScreenWidth}>{props.children}</ButtonText>
+            {props.icon && (
+                <ButtonIcon hideTextOnMobileScreenWidth={props.hideTextOnMobileScreenWidth} src={props.iconSrc} />
+            )}
         </ButtonMain>
     )
 }
@@ -82,4 +99,5 @@ ButtonMain.propTypes = {
     children: PropTypes.string.isRequired,
     button: PropTypes.bool,
     iconSrc: PropTypes.string,
+    hideTextOnMobileScreenWidth: PropTypes.number,
 }

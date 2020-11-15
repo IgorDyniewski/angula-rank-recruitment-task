@@ -64,18 +64,26 @@ const TopFixedContent = styled.div`
 const ScrollContentWrapper = styled.div`
     width: 100vw;
     min-height: 100vh;
+    max-width: 690px;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+`
+const CenterWrapper = styled.div`
+    width: 100vw;
+    min-height: 100vh;
     position: absolute;
     top: 0px;
     left: 0px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     z-index: 0;
-`
-const ScrollContent = styled.div`
-    width: calc(100% - 40px);
-    max-width: 690px;
+    padding-left: 10px;
+    padding-right: 10px;
 `
 const PseudoListElement = styled.div`
     height: 330px;
@@ -177,30 +185,32 @@ const OrganizationPage = (props) => {
             </HeaderWrapper>
 
             {/* Scroll content */}
-            <ScrollContentWrapper>
-                {displayedData.length > 0 && (
-                    <InfiniteScroll
-                        dataLength={displayedData.length}
-                        next={_loadMoreFields}
-                        hasMore={displayedData.length < contributors.length}
-                        loader={<h4>Loading...</h4>}
-                    >
-                        <PseudoListElement />
-                        {displayedData.map((contributor, index) => (
-                            <UserProfileBar
-                                key={index}
-                                profilePictureSrc={contributor.avatar_url}
-                                githubUrl={contributor.html_url}
-                                fullName={contributor.name}
-                                contributions={contributor.contributions}
-                                gitHubLogin={contributor.login}
-                                publicGists={contributor.public_gists}
-                                publicRepos={contributor.public_repos}
-                            />
-                        ))}
-                    </InfiniteScroll>
-                )}
-            </ScrollContentWrapper>
+            <CenterWrapper>
+                <ScrollContentWrapper>
+                    {displayedData.length > 0 && (
+                        <InfiniteScroll
+                            dataLength={displayedData.length}
+                            next={_loadMoreFields}
+                            hasMore={displayedData.length < contributors.length}
+                            loader={<h4>Loading...</h4>}
+                        >
+                            <PseudoListElement />
+                            {displayedData.map((contributor, index) => (
+                                <UserProfileBar
+                                    key={index}
+                                    profilePictureSrc={contributor.avatar_url}
+                                    githubUrl={contributor.html_url}
+                                    fullName={contributor.name}
+                                    contributions={contributor.contributions}
+                                    gitHubLogin={contributor.login}
+                                    publicGists={contributor.public_gists}
+                                    publicRepos={contributor.public_repos}
+                                />
+                            ))}
+                        </InfiniteScroll>
+                    )}
+                </ScrollContentWrapper>
+            </CenterWrapper>
         </>
     )
 }
