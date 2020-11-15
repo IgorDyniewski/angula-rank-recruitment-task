@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes, { array } from 'prop-types'
+import PropTypes from 'prop-types'
 
 // Title wrapper
 const TitleWrapperMain = styled.div`
@@ -50,15 +50,36 @@ const ButtonMain = styled.button`
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 6px;
-
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 200ms ease-in-out;
+    :hover {
+        background-color: ${(props) => props.theme.colors.blueHover};
+    }
     :focus {
         outline: none;
     }
 `
+const ButtonIcon = styled.div`
+    width: 13px;
+    height: 13px;
+    background-image: url('${(props) => props.src}');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+`
 export const Button = (props) => {
-    return <ButtonMain {...props}>{props.children}</ButtonMain>
+    return (
+        <ButtonMain {...props}>
+            {props.children} {props.icon && <ButtonIcon src={props.iconSrc} />}
+        </ButtonMain>
+    )
 }
 // Checking types
 ButtonMain.propTypes = {
     children: PropTypes.string.isRequired,
+    button: PropTypes.bool,
+    iconSrc: PropTypes.string,
 }

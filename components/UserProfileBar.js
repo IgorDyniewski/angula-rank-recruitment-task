@@ -85,7 +85,9 @@ const UserProfileBar = (props) => {
                 <DetailsSpan>{props.publicGists} gists</DetailsSpan>
             </LeftWrapper>
 
-            <Button>Go to profile</Button>
+            <Button icon iconSrc={'/assets/go-to-profile-icon.svg'}>
+                Go to profile
+            </Button>
         </Main>
     )
 }
