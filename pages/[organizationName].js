@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import LoadingDataBanner from '../components/LoadingDataBanner'
 import ErrorBanner from '../components/ErrorBanner'
 import UserProfileBar from '../components/UserProfileBar'
-import { TitleWrapper, Title, SubTitle, Button } from '../components/Elements'
+import { TitleWrapper, Title, SubTitle, Button, Select } from '../components/Elements'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 // Styled components
@@ -86,7 +86,7 @@ const CenterWrapper = styled.div`
     padding-right: 10px;
 `
 const PseudoListElement = styled.div`
-    height: 330px;
+    height: 280px;
 `
 const LoadedTopFixedContentWrapper = styled.div`
     width: 100%;
@@ -100,7 +100,7 @@ const LoadedTopFixedContentWrapper = styled.div`
 const OrganizationPage = (props) => {
     // Getting name of organization
     const router = useRouter()
-    const { organizationName } = router.query
+    const { organizationName, sortType } = router.query
 
     // States
     const [isDataFetched, setIsDataFetched] = useState(false)
@@ -108,10 +108,19 @@ const OrganizationPage = (props) => {
     const [isError, setIsError] = useState(false)
     const [displayedData, setDisplayedData] = useState([])
 
+    const _changeSortType = (type) => {
+        router
+            .push({ pathname: router.pathname, query: { organizationName: organizationName, sortType: type } })
+            .then(() => window.scrollTo(0, 0))
+    }
+
     // Fetching organization contributors to all organization's repositories
     const _fetchOrganizationContributors = async (organizationName) => {
         // Spinning that loader
         setIsDataFetched(false)
+
+        // Scrolling to top of a page
+        window.scrollTo(0, 0)
 
         // Fetching contributors
         const res = await fetch(`api/get-all-organization-contributors/${organizationName}`)
@@ -128,18 +137,32 @@ const OrganizationPage = (props) => {
             setIsError(true)
             return
         }
-
         // We should have all contributors
-        setContributors(response.allContributors)
-        setDisplayedData(response.allContributors.slice(0, 20))
-        setIsDataFetched(true)
+
+        // Sorting contributors and updating data
+        const _setInitialData = (data) => {
+            setContributors(data)
+            setDisplayedData(data.slice(0, 20))
+            setIsDataFetched(true)
+        }
+        if (sortType === 'contributions') {
+            _setInitialData(response.allContributors.sort((a, b) => b.contributions - a.contributions))
+        } else if (sortType === 'repos') {
+            _setInitialData(response.allContributors.sort((a, b) => b.public_repos - a.public_repos))
+        } else if (sortType === 'gists') {
+            _setInitialData(response.allContributors.sort((a, b) => b.public_gists - a.public_gists))
+        } else if (sortType === 'followers') {
+            _setInitialData(response.allContributors.sort((a, b) => b.followers - a.followers))
+        } else {
+            _setInitialData(response.allContributors)
+        }
     }
 
     // Fetching / Re-fetching on organization name change
     useEffect(async () => {
         if (!organizationName) return // Checking if router knows org name
         _fetchOrganizationContributors(organizationName)
-    }, [organizationName])
+    }, [organizationName, sortType])
 
     // Loading more fields
     const _loadMoreFields = () => {
@@ -178,7 +201,13 @@ const OrganizationPage = (props) => {
                                     Browse all contributors from <b>github.com/{organizationName}</b>
                                 </SubTitle>
                             </TitleWrapper>
-                            <Button>Sort by:</Button>
+                            <Select value={sortType} onChange={(e) => _changeSortType(e.target.value)}>
+                                <option value="none">Sort by: none</option>
+                                <option value="contributions">Sort by: contributions</option>
+                                <option value="followers">Sort by: followers</option>
+                                <option value="repos">Sort by: repos</option>
+                                <option value="gists">Sort by: gists</option>
+                            </Select>
                         </LoadedTopFixedContentWrapper>
                     )}
                 </TopFixedContent>

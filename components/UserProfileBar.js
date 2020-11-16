@@ -69,6 +69,7 @@ const GithubUrl = styled.a`
     font-size: 13px;
     margin-top: 3px;
     cursor: pointer;
+    max-width: 180px;
 `
 const DetailsSpan = styled.span`
     font-size: 10px;

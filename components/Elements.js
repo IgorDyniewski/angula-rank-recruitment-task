@@ -96,8 +96,44 @@ export const Button = (props) => {
 }
 // Checking types
 ButtonMain.propTypes = {
-    children: PropTypes.string.isRequired,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
     button: PropTypes.bool,
     iconSrc: PropTypes.string,
     hideTextOnMobileScreenWidth: PropTypes.number,
+}
+
+// Select
+const SelectMain = styled.select`
+    background-color: ${(props) => props.theme.colors.blue};
+    color: ${(props) => props.theme.colors.buttonText};
+    border: none;
+    font-size: 14px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 200ms ease-in-out;
+    :hover {
+        background-color: ${(props) => props.theme.colors.blueHover};
+    }
+    :focus {
+        outline: none;
+    }
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('/assets/list.svg');
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 10px);
+    background-position-y: 50%;
+`
+export const Select = (props) => {
+    return <SelectMain {...props}>{props.children}</SelectMain>
+}
+// Checking types
+Select.propTypes = {
+    children: PropTypes.array.isRequired,
 }
