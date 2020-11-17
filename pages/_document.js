@@ -26,7 +26,7 @@ class MyDocument extends Document {
                     {this.props.styleTags}
 
                     {/* Fav icon */}
-                    <link rel="icon" href="fav.png" />
+                    {/* <link rel="icon" href="fav.png" /> */}
                 </Head>
                 <body>
                     <Main />

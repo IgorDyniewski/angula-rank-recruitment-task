@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 // Constants
 const mobileViewSwitchScreenWidth = 740
@@ -115,14 +116,15 @@ const UserProfileBar = (props) => {
                     <DetailsSpan>{props.publicGists} gists</DetailsSpan>
                 </DetailsWrapper>
             </LeftWrapper>
-
-            <Button
-                icon
-                iconSrc={'/assets/go-to-profile-icon.svg'}
-                hideTextOnMobileScreenWidth={hideButtonTextSwitchScreenWidth}
-            >
-                Go to profile
-            </Button>
+            <Link href={`/user/${props.gitHubLogin}`}>
+                <Button
+                    icon
+                    iconSrc={'/assets/go-to-profile-icon.svg'}
+                    hideTextOnMobileScreenWidth={hideButtonTextSwitchScreenWidth}
+                >
+                    Go to profile
+                </Button>
+            </Link>
         </Main>
     )
 }

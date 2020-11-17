@@ -137,3 +137,91 @@ export const Select = (props) => {
 Select.propTypes = {
     children: PropTypes.array.isRequired,
 }
+
+// Styled components for "every" page
+export const HeaderBackgroundWrapper = styled.div`
+    width: 100vw;
+    position: relative;
+    background-image: url('/assets/top-bg.svg');
+    background-size: 100%;
+    background-position: 0px 0px;
+    min-width: 1700px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+`
+export const HeaderBackground = styled.div`
+    width: 100%;
+    padding-top: ${(530 / 1920) * 100}%;
+    position: relative;
+`
+export const HeaderWrapper = styled.div`
+    width: 100vw;
+    position: fixed;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    height: 240px;
+    padding-bottom: 7px;
+    box-sizing: border-box;
+    z-index: 2;
+    background-color: ${(props) => props.theme.colors.githubGray};
+`
+export const LogoWrapper = styled.div`
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+export const HeaderLogo = styled.div`
+    height: 80%;
+    width: 160px;
+    background-image: url('/assets/logo.svg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+`
+export const TopFixedContent = styled.div`
+    width: calc(100vw - 40px);
+    max-width: 690px;
+    height: calc(100% - 80px);
+    border-bottom: ${(props) => (props.isBorderVisible ? `2px solid ${props.theme.colors.lightGray}` : 'none')};
+`
+export const ScrollContentWrapper = styled.div`
+    width: 100vw;
+    min-height: 100vh;
+    max-width: 690px;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+`
+export const CenterWrapper = styled.div`
+    width: 100vw;
+    min-height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+`
+export const PseudoListElement = styled.div`
+    height: 280px;
+`
+export const LoadedTopFixedContentWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 20px;
+`
