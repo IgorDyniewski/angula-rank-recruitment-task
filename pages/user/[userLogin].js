@@ -106,7 +106,23 @@ const UserLoginPage = (props) => {
     const { profileData, repos } = props.userData
 
     // States
-    const [usersDisplayedRepos, setUsersDisplayedRepos] = useState(repos.slice(0, 30))
+    const [usersDisplayedRepos, setUsersDisplayedRepos] = useState(repos)
+    const [page, setPage] = useState(1)
+    const [hasMore, setHasMore] = useState(true)
+
+    // Loading more fields
+    const _loadMoreFields = async () => {
+        let response = await fetch(`/api/get-user-repos/${profileData.login}?page=${page + 1}`)
+        response = await response.json()
+
+        if (response.length === 0) setHasMore(false)
+
+        console.log('x')
+
+        // Updating list and updating page
+        setUsersDisplayedRepos(usersDisplayedRepos.concat(response.repos))
+        setPage(page + 1)
+    }
 
     return (
         <>
@@ -133,11 +149,18 @@ const UserLoginPage = (props) => {
                         <Title>Public repositories</Title>
                         <SubTitle>All user's public repositories</SubTitle>
                     </TitleWrapper>
-                    <TilesWrapper>
-                        {repos.map((repo, index) => (
-                            <RepositoryTile key={index} name={repo.name} description={repo.description} />
-                        ))}
-                    </TilesWrapper>
+                    <InfiniteScroll
+                        dataLength={usersDisplayedRepos.length}
+                        next={_loadMoreFields}
+                        hasMore={hasMore}
+                        loader={<h4>Loading...</h4>}
+                    >
+                        <TilesWrapper>
+                            {usersDisplayedRepos.map((repo, index) => (
+                                <RepositoryTile key={index} name={repo.name} description={repo.description} />
+                            ))}
+                        </TilesWrapper>
+                    </InfiniteScroll>
                 </BodyContent>
             </ContentWrapper>
         </>

@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     let userData = { profileData: user.data }
 
     // Getting user's public repos
-    const repos = await _getAllUserRepositories(userLogin)
+    const repos = await _getUserRepositories(userLogin, 1)
 
     // We should have user's repos
     userData.repos = repos
@@ -41,26 +41,17 @@ export default async function handler(req, res) {
 }
 
 // Getting user repos
-const _getAllUserRepositories = async (userLogin) => {
+export const _getUserRepositories = async (userLogin, page) => {
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN,
     })
-    let repos = []
-    let page = 0
-    let lastPageCount = 100
 
-    while (lastPageCount === 100) {
-        const { data: data } = await octokit.request(`GET /users/${userLogin}/repos`, {
-            username: userLogin,
-            per_page: 100,
-            page: page,
-        })
-        lastPageCount = data.length
-        page++
-        repos = repos.concat(data)
-    }
+    // Getting repos for given page and user
+    const { data: data } = await octokit.request(`GET /users/${userLogin}/repos`, {
+        username: userLogin,
+        per_page: 20,
+        page: page,
+    })
 
-    console.log(repos.length)
-
-    return repos
+    return data
 }
