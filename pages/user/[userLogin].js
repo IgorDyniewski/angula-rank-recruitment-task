@@ -144,8 +144,6 @@ const UserLoginPage = (props) => {
 UserLoginPage.getInitialProps = async (context) => {
     const { userLogin } = context.query
 
-    console.log(context.query)
-
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/get-user-data/${userLogin}`)
     let response
     if (res.ok) {

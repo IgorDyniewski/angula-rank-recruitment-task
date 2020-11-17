@@ -31,23 +31,36 @@ export default async function handler(req, res) {
     let userData = { profileData: user.data }
 
     // Getting user's public repos
-    let areReposRequestValid = true
-    let repos = await octokit
-        .request(`GET /users/${userLogin}/repos`, {
-            username: userLogin,
-        })
-        .catch((err) => {
-            console.log(err)
-            res.json({ res: false, err: 'WRONG_USER' })
-            areReposRequestValid = false
-            return
-        })
-    if (!areReposRequestValid) return
+    const repos = await _getAllUserRepositories(userLogin)
 
     // We should have user's repos
-
-    userData.repos = repos.data
+    userData.repos = repos
 
     // Sending reponse
     res.json({ res: true, userData: userData })
+}
+
+// Getting user repos
+const _getAllUserRepositories = async (userLogin) => {
+    const octokit = new Octokit({
+        auth: process.env.GITHUB_TOKEN,
+    })
+    let repos = []
+    let page = 0
+    let lastPageCount = 100
+
+    while (lastPageCount === 100) {
+        const { data: data } = await octokit.request(`GET /users/${userLogin}/repos`, {
+            username: userLogin,
+            per_page: 100,
+            page: page,
+        })
+        lastPageCount = data.length
+        page++
+        repos = repos.concat(data)
+    }
+
+    console.log(repos.length)
+
+    return repos
 }
