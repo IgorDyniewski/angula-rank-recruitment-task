@@ -16,6 +16,8 @@ export default async function handler(req, res) {
         console.log('Development mode, using fake data...')
         res.json(fakeData)
         return
+    } else {
+        console.log('Running in production mode')
     }
 
     // Init github api
@@ -38,6 +40,8 @@ export default async function handler(req, res) {
 
     const orgRepositoriesNames = orgRepositories.data.map((repo) => repo.name) // We have all repo's names for org
 
+    console.log('Got all repositories: ', orgRepositoriesNames.length)
+
     // Getting all contributors for each repo
     const allContributorsSeparated = await Promise.all(
         orgRepositoriesNames.map((repoName) => _getAllContributorsForRepo(organizationName, repoName))
@@ -53,6 +57,8 @@ export default async function handler(req, res) {
         })
     })
 
+    console.log('Got all unique contributors: ', allContributors.length)
+
     // Leaving only necessary user data
     allContributors = allContributors.map((user) => ({
         login: user.login,
@@ -66,7 +72,10 @@ export default async function handler(req, res) {
             _getUserDetails(allContributors[i].login, { contributions: allContributors[i].contributions })
         )
     }
+
     const contributorsWithDetails = await Promise.all(contributorsWithDetailsPromises)
+
+    console.log('Got details of each user: ', contributorsWithDetails.length)
 
     // Sending user data
     res.json({ res: true, allContributors: contributorsWithDetails })

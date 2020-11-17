@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 // Components
 import { LogoWrapper, HeaderLogo } from '../../components/Elements'
 import RepositoryTile from '../../components/RepositoryTile'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 // Styled components
 const MainHeader = styled.div`
@@ -103,6 +104,9 @@ const BodyContent = styled(Content)`
 
 const UserLoginPage = (props) => {
     const { profileData, repos } = props.userData
+
+    // States
+    const [usersDisplayedRepos, setUsersDisplayedRepos] = useState(repos.slice(0, 30))
 
     return (
         <>
