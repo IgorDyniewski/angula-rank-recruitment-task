@@ -127,6 +127,8 @@ const BodyContent = styled(Content)`
 const UserLoginPage = (props) => {
     const { profileData, repos } = props.userData
 
+    console.log(repos)
+
     // States
     const [usersDisplayedRepos, setUsersDisplayedRepos] = useState(repos)
     const [page, setPage] = useState(1)
@@ -177,7 +179,12 @@ const UserLoginPage = (props) => {
                     >
                         <TilesWrapper>
                             {usersDisplayedRepos.map((repo, index) => (
-                                <RepositoryTile key={index} name={repo.name} description={repo.description} />
+                                <RepositoryTile
+                                    key={index}
+                                    name={repo.name}
+                                    description={repo.description}
+                                    htmlUrl={repo.html_url}
+                                />
                             ))}
                         </TilesWrapper>
                     </InfiniteScroll>

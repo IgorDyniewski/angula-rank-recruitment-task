@@ -56,9 +56,11 @@ const RepositoryTile = (props) => {
                         : props.description.substr(0, 105) + '...'
                     : 'No description'}
             </RepoDescription>
-            <Button icon iconSrc={'/assets/go-to-profile-icon.svg'}>
-                Go to repo
-            </Button>
+            <a href={props.htmlUrl} target="blank">
+                <Button icon iconSrc={'/assets/go-to-profile-icon.svg'}>
+                    Go to repo
+                </Button>
+            </a>
         </Main>
     )
 }
@@ -67,6 +69,8 @@ const RepositoryTile = (props) => {
 RepositoryTile.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
+    href: PropTypes.string.isRequired,
+    htmlUrl: PropTypes.string.isRequired,
 }
 
 export default RepositoryTile
