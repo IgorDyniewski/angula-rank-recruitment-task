@@ -23,6 +23,9 @@ const Main = styled.div`
     @media (max-width: 1000px) {
         width: calc((100% / 2) - 20px);
     }
+    @media (max-width: 600px) {
+        width: 100%;
+    }
 `
 const RepoName = styled.span`
     font-weight: 500;

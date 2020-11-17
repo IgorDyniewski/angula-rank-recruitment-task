@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import LoadingDataBanner from '../components/LoadingDataBanner'
 import ErrorBanner from '../components/ErrorBanner'
 import UserProfileBar from '../components/UserProfileBar'
+import ListLoader from '../components/LongListLoader'
 import {
     TitleWrapper,
     Title,
@@ -148,7 +149,7 @@ const OrganizationPage = (props) => {
                             dataLength={displayedData.length}
                             next={_loadMoreFields}
                             hasMore={displayedData.length < contributors.length}
-                            loader={<h4>Loading...</h4>}
+                            loader={displayedData.length < contributors.length && <ListLoader />}
                         >
                             <PseudoListElement />
                             {displayedData.map((contributor, index) => (

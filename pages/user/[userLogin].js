@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { LogoWrapper, HeaderLogo } from '../../components/Elements'
 import RepositoryTile from '../../components/RepositoryTile'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import LongListLoader from '../../components/LongListLoader'
 
 // Styled components
 const MainHeader = styled.div`
@@ -34,15 +35,29 @@ const Content = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    @media (max-width: 570px) {
+        flex-direction: column;
+    }
 `
 const ProfilePicture = styled.div`
     width: 150px;
     height: 150px;
+    min-width: 150px;
+    min-height: 150px;
     border-radius: 150px;
-    border: 4px solid ${(props) => props.theme.colors.blue};
+    border: 6px solid ${(props) => props.theme.colors.blue};
     background-image: url('${(props) => props.src}');
     background-size: cover;
     background-position: center;
+    @media (max-width: 730px) {
+        width: 100px;
+        height: 100px;
+        min-width: 100px;
+        min-height: 100px;
+    }
+    @media (max-width: 570px) {
+        margin-bottom: 30px;
+    }
 `
 const UserDetailsWrapper = styled.div`
     display: flex;
@@ -63,9 +78,10 @@ const GitHubUrl = styled.a`
 const Description = styled.p`
     max-width: 400px;
     color: ${(props) => props.theme.colors.lightGray};
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 300;
     margin-bottom: 0px;
+    margin-top: 5px;
 `
 const ContentWrapper = styled.div`
     width: 100%;
@@ -83,11 +99,17 @@ const Title = styled.span`
     font-size: 35px;
     font-weight: 500;
     color: ${(props) => props.theme.colors.githubGray};
+    @media (max-width: 700px) {
+        font-size: 28px;
+    }
 `
 const SubTitle = styled.span`
     font-size: 20px;
     font-weight: 300;
     color: ${(props) => props.theme.colors.lightGray};
+    @media (max-width: 700px) {
+        font-size: 18px;
+    }
 `
 const TilesWrapper = styled.div`
     width: 100%;
@@ -115,9 +137,7 @@ const UserLoginPage = (props) => {
         let response = await fetch(`/api/get-user-repos/${profileData.login}?page=${page + 1}`)
         response = await response.json()
 
-        if (response.length === 0) setHasMore(false)
-
-        console.log('x')
+        if (response.repos.length === 0) setHasMore(false)
 
         // Updating list and updating page
         setUsersDisplayedRepos(usersDisplayedRepos.concat(response.repos))
@@ -153,7 +173,7 @@ const UserLoginPage = (props) => {
                         dataLength={usersDisplayedRepos.length}
                         next={_loadMoreFields}
                         hasMore={hasMore}
-                        loader={<h4>Loading...</h4>}
+                        loader={hasMore && <LongListLoader />}
                     >
                         <TilesWrapper>
                             {usersDisplayedRepos.map((repo, index) => (

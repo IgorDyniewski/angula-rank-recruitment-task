@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 // Components
-import Spinner from './Spinner'
+import Spinner from 'react-spinners/BarLoader'
 
 // Styled components
 const MainWrapper = styled.div`
@@ -16,7 +16,7 @@ const MainWrapper = styled.div`
 `
 const Text = styled.span`
     color: white;
-    margin-top: 20px;
+    margin-top: 30px;
     font-size: 15px;
     color: ${(props) => props.theme.colors.textSecondary};
     text-align: center;
@@ -25,7 +25,7 @@ const Text = styled.span`
 const LoadingDataBanner = (props) => {
     return (
         <MainWrapper>
-            <Spinner />
+            <Spinner color={'white'} />
             {props.loadingText && <Text>{props.loadingText}</Text>}
         </MainWrapper>
     )
