@@ -10,7 +10,6 @@ import {
     TitleWrapper,
     Title,
     SubTitle,
-    Button,
     Select,
     HeaderBackgroundWrapper,
     HeaderBackground,
@@ -162,6 +161,7 @@ const OrganizationPage = (props) => {
                                     gitHubLogin={contributor.login}
                                     publicGists={contributor.public_gists}
                                     publicRepos={contributor.public_repos}
+                                    followersCount={contributor.followers}
                                 />
                             ))}
                         </InfiniteScroll>

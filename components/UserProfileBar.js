@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 // Constants
 const mobileViewSwitchScreenWidth = 740
-const hideButtonTextSwitchScreenWidth = 450
+const hideButtonTextSwitchScreenWidth = 500
 
 // Components
 import { Button } from './Elements'
@@ -14,7 +14,6 @@ import { Button } from './Elements'
 const Main = styled.div`
     width: 100%;
     max-width: 690px;
-    height: 80px;
     border-radius: 8px;
     margin-bottom: 20px;
     border: 1px solid ${(props) => props.theme.colors.textSecondary};
@@ -28,21 +27,18 @@ const Main = styled.div`
     justify-content: space-between;
     padding-left: 20px;
     padding-right: 20px;
+    height: auto;
+    padding: 20px;
     @media (max-width: ${mobileViewSwitchScreenWidth}px) {
-        height: auto;
         padding: 10px;
     }
 `
 const LeftWrapper = styled.div`
     height: 100%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    @media (max-width: ${mobileViewSwitchScreenWidth}px) {
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-    }
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 `
 const ProfilePicture = styled.div`
     width: 53px;
@@ -78,14 +74,15 @@ const DetailsSpan = styled.span`
     background-color: ${(props) => props.theme.colors.githubGray};
     color: ${(props) => props.theme.colors.textSecondary};
     padding: 4px;
-    padding-left: 6px;
-    padding-right: 7px;
+    padding-left: 8px;
+    padding-right: 8px;
     border-radius: 20px;
+    margin-top: 5px;
 `
 const DetailsWrapper = styled.div`
-    @media (max-width: ${mobileViewSwitchScreenWidth}px) {
-        margin-top: 10px;
-    }
+    margin-top: 7px;
+    display: flex;
+    flex-wrap: wrap;
 `
 const ProfilePictureAndNameWrapper = styled.div`
     display: flex;
@@ -101,7 +98,7 @@ const UserProfileBar = (props) => {
                     <ProfilePicture src={props.profilePictureSrc} />
                     <FullNameAndGithubUrlWrapper>
                         <FullName>
-                            {props.fullName && props.fullName.length > 14
+                            {props.fullName && props.fullName.length > 24
                                 ? props.fullName.substr(0, 14) + '...'
                                 : props.fullName}
                         </FullName>
@@ -114,6 +111,7 @@ const UserProfileBar = (props) => {
                     <DetailsSpan>{props.contributions} contributions</DetailsSpan>
                     <DetailsSpan>{props.publicRepos} repos</DetailsSpan>
                     <DetailsSpan>{props.publicGists} gists</DetailsSpan>
+                    <DetailsSpan>{props.followersCount} followers</DetailsSpan>
                 </DetailsWrapper>
             </LeftWrapper>
             <Link href={`/user/${props.gitHubLogin}`}>
@@ -138,6 +136,7 @@ UserProfileBar.propTypes = {
     gitHubLogin: PropTypes.string.isRequired,
     publicRepos: PropTypes.number.isRequired,
     publicGists: PropTypes.number.isRequired,
+    followersCount: PropTypes.number.isRequired,
 }
 
 export default UserProfileBar

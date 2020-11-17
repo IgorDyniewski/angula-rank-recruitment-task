@@ -224,4 +224,8 @@ export const LoadedTopFixedContentWrapper = styled.div`
     align-items: flex-end;
     justify-content: space-between;
     padding-bottom: 20px;
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 `

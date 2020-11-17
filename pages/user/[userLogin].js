@@ -123,11 +123,24 @@ const BodyContent = styled(Content)`
     flex-direction: column;
     align-items: flex-start;
 `
+const BadgesWrapper = styled.div`
+    display: flex;
+    margin-top: 20px;
+`
+const Badge = styled.div`
+    background-color: ${(props) => props.theme.colors.githubGray};
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    color: ${(props) => props.theme.colors.textSecondary};
+    border-radius: 20px;
+    font-size: 11px;
+    margin: 4px;
+`
 
 const UserLoginPage = (props) => {
     const { profileData, repos } = props.userData
-
-    console.log(repos)
 
     // States
     const [usersDisplayedRepos, setUsersDisplayedRepos] = useState(repos)
@@ -162,6 +175,11 @@ const UserLoginPage = (props) => {
                             {profileData.html_url.replace('https://', '')}
                         </GitHubUrl>
                         <Description>{profileData.bio}</Description>
+                        <BadgesWrapper>
+                            <Badge>{profileData.public_repos} repos</Badge>
+                            <Badge>{profileData.public_gists} gists</Badge>
+                            <Badge>{profileData.followers} followers</Badge>
+                        </BadgesWrapper>
                     </UserDetailsWrapper>
                 </Content>
             </UserHeaderMain>
