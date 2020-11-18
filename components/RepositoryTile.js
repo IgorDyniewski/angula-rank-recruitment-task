@@ -18,6 +18,7 @@ const Main = styled.div`
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
+    position: relative;
     @supports (backdrop-filter: blur(15px)) {
         backdrop-filter: saturate(180%) blur(15px);
     }
@@ -48,21 +49,23 @@ const Button = styled(ButtonImport)`
 
 const RepositoryTile = (props) => {
     return (
-        <Main>
-            <RepoName>{props.name}</RepoName>
-            <RepoDescription>
-                {props.description
-                    ? props.description.length < 105
-                        ? props.description
-                        : props.description.substr(0, 105) + '...'
-                    : 'No description'}
-            </RepoDescription>
-            <Link href={'/user' + props.htmlUrl.replace('https://github.com', '')} target="blank">
-                <Button icon iconSrc={'/assets/go-to-profile-icon.svg'}>
-                    Go to repo
-                </Button>
-            </Link>
-        </Main>
+        <>
+            <Main>
+                <RepoName>{props.name}</RepoName>
+                <RepoDescription>
+                    {props.description
+                        ? props.description.length < 105
+                            ? props.description
+                            : props.description.substr(0, 105) + '...'
+                        : 'No description'}
+                </RepoDescription>
+                <Link href={'/user' + props.htmlUrl.replace('https://github.com', '')} target="blank">
+                    <Button icon iconSrc={'/assets/go-to-profile-icon.svg'}>
+                        Go to repo
+                    </Button>
+                </Link>
+            </Main>
+        </>
     )
 }
 

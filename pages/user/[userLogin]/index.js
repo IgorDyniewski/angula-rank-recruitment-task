@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
+// Constants
+const mobileSwitchScreenWidth = 590
+
 // Components
 import { LogoWrapper, HeaderLogo } from '../../../components/Elements'
 import RepositoryTile from '../../../components/RepositoryTile'
@@ -35,7 +38,7 @@ const Content = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    @media (max-width: 570px) {
+    @media (max-width: ${mobileSwitchScreenWidth}px) {
         flex-direction: column;
     }
 `
@@ -64,16 +67,25 @@ const UserDetailsWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
     margin-left: 20px;
+    @media (max-width: ${mobileSwitchScreenWidth}px) {
+        align-items: center;
+    }
 `
 const NameSpan = styled.span`
     color: ${(props) => props.theme.colors.githubGray};
     font-size: 30px;
     font-weight: 500;
+    @media (max-width: ${mobileSwitchScreenWidth}px) {
+        text-align: center;
+    }
 `
 const GitHubUrl = styled.a`
     color: ${(props) => props.theme.colors.lightGray};
     font-size: 18px;
     font-weight: 400;
+    @media (max-width: ${mobileSwitchScreenWidth}px) {
+        text-align: center;
+    }
 `
 const Description = styled.p`
     max-width: 400px;
@@ -82,6 +94,9 @@ const Description = styled.p`
     font-weight: 300;
     margin-bottom: 0px;
     margin-top: 5px;
+    @media (max-width: ${mobileSwitchScreenWidth}px) {
+        text-align: center;
+    }
 `
 const ContentWrapper = styled.div`
     width: 100%;

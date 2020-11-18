@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 const TitleWrapperMain = styled.div`
     display: flex;
     flex-direction: column;
+    margin-right: 20px;
 `
 export const TitleWrapper = (props) => {
     return <TitleWrapperMain {...props}>{props.children}</TitleWrapperMain>
@@ -129,6 +130,7 @@ const SelectMain = styled.select`
     background-repeat: no-repeat;
     background-position-x: calc(100% - 10px);
     background-position-y: 50%;
+    margin-top: 15px;
 `
 export const Select = (props) => {
     return <SelectMain {...props}>{props.children}</SelectMain>

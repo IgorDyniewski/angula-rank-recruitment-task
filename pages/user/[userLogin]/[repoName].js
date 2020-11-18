@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import styled from 'styled-components'
 
 // Components
 import UserProfileBar from '../../../components/UserProfileBar'
 import ListLoader from '../../../components/LongListLoader'
 import {
     TitleWrapper,
-    Title,
+    Title as TitleImport,
     SubTitle,
     Select,
     HeaderBackgroundWrapper,
@@ -22,6 +23,12 @@ import {
 } from '../../../components/Elements'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Spinner from 'react-spinners/BarLoader'
+
+// Styled components
+const Title = styled(TitleImport)`
+    font-size: 25px;
+    margin-bottom: 10px;
+`
 
 const RepoPage = (props) => {
     // Getting name of organization
