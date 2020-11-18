@@ -84,16 +84,16 @@ const ButtonIcon = styled.div`
         margin-left: 0px;
     }
 `
-export const Button = (props) => {
+export const Button = React.forwardRef((props, ref) => {
     return (
-        <ButtonMain {...props}>
+        <ButtonMain {...props} ref={ref}>
             <ButtonText hideTextOnMobileScreenWidth={props.hideTextOnMobileScreenWidth}>{props.children}</ButtonText>
             {props.icon && (
                 <ButtonIcon hideTextOnMobileScreenWidth={props.hideTextOnMobileScreenWidth} src={props.iconSrc} />
             )}
         </ButtonMain>
     )
-}
+})
 // Checking types
 ButtonMain.propTypes = {
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,

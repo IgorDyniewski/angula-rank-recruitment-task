@@ -70,7 +70,6 @@ const RepositoryTile = (props) => {
 RepositoryTile.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
-    href: PropTypes.string.isRequired,
     htmlUrl: PropTypes.string.isRequired,
 }
 
