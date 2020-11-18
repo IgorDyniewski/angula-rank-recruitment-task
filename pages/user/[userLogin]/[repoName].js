@@ -28,6 +28,12 @@ import Spinner from 'react-spinners/BarLoader'
 const Title = styled(TitleImport)`
     font-size: 25px;
     margin-bottom: 10px;
+    transition: opacity 200ms ease-in-out;
+    cursor: pointer;
+
+    :hover {
+        opacity: 0.8;
+    }
 `
 
 const RepoPage = (props) => {
@@ -108,7 +114,7 @@ const RepoPage = (props) => {
                     {/* Rendering title and buttons when data is loaded */}
                     <LoadedTopFixedContentWrapper>
                         <TitleWrapper>
-                            <Title>{repoData.full_name}</Title>
+                            <Title onClick={() => window.open(repoData.html_url)}>{repoData.full_name}</Title>
                             <SubTitle>
                                 Browse all contributors from <b>github.com/{repoData.full_name}</b>
                             </SubTitle>
