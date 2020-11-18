@@ -67,6 +67,10 @@ const GithubUrl = styled.a`
     margin-top: 3px;
     cursor: pointer;
     max-width: 180px;
+    transition: color 200ms ease-in-out;
+    :hover {
+        color: ${(props) => props.theme.colors.blue};
+    }
 `
 const DetailsSpan = styled.span`
     font-size: 10px;

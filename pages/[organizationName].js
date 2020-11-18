@@ -110,7 +110,7 @@ const OrganizationPage = (props) => {
                 </LogoWrapper>
 
                 {/* Top fixed content */}
-                <TopFixedContent isBorderVisible={!isError}>
+                <TopFixedContent isBorderVisible={false}>
                     {/* Rendering spinner when data is loading  */}
                     {!isDataFetched && <LoadingDataBanner loadingText={'Hold tight! We are cooking up data for you'} />}
 

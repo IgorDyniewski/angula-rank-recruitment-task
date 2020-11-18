@@ -7,6 +7,9 @@ const TitleWrapperMain = styled.div`
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+    @media (max-width: 590px) {
+        margin-bottom: 10px;
+    }
 `
 export const TitleWrapper = (props) => {
     return <TitleWrapperMain {...props}>{props.children}</TitleWrapperMain>

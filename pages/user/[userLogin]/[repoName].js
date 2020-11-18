@@ -22,7 +22,6 @@ import {
     LoadedTopFixedContentWrapper,
 } from '../../../components/Elements'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Spinner from 'react-spinners/BarLoader'
 
 // Styled components
 const Title = styled(TitleImport)`
