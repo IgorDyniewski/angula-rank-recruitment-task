@@ -98,9 +98,11 @@ const UserProfileBar = (props) => {
                     <ProfilePicture src={props.profilePictureSrc} />
                     <FullNameAndGithubUrlWrapper>
                         <FullName>
-                            {props.fullName && props.fullName.length > 24
-                                ? props.fullName.substr(0, 14) + '...'
-                                : props.fullName}
+                            {props.fullName
+                                ? props.fullName.length > 24
+                                    ? props.fullName.substr(0, 14) + '...'
+                                    : props.fullName
+                                : props.githubUrl.replace('https://github.com/', '')}
                         </FullName>
                         <GithubUrl href={props.githubUrl} target="_blank">
                             {props.githubUrl.replace('https://', '')}

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 // Components
-import LoadingDataBanner from '../../../components/LoadingDataBanner'
-import ErrorBanner from '../../../components/ErrorBanner'
 import UserProfileBar from '../../../components/UserProfileBar'
 import ListLoader from '../../../components/LongListLoader'
 import {
@@ -23,6 +21,7 @@ import {
     LoadedTopFixedContentWrapper,
 } from '../../../components/Elements'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Spinner from 'react-spinners/BarLoader'
 
 const RepoPage = (props) => {
     // Getting name of organization
@@ -33,13 +32,15 @@ const RepoPage = (props) => {
     const { repoData } = props
 
     // States
+    const [isDataFetched, setIsDataFetched] = useState(false)
     const [displayedData, setDisplayedData] = useState([])
     const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState(true)
 
     const _changeSortType = (type) => {
+        console.log(router.pathname)
         router
-            .push({ pathname: router.pathname, query: { organizationName: organizationName, sortType: type } })
+            .push({ pathname: router.pathname, query: { userLogin: userLogin, repoName: repoName, sortType: type } })
             .then(() => window.scrollTo(0, 0))
     }
 
@@ -60,9 +61,26 @@ const RepoPage = (props) => {
         setPage(page + 1)
     }
 
+    // Setting sort function
+    const _sortFunction = (a, b) => {
+        if (sortType === 'contributions') {
+            return b.contributions - a.contributions
+        } else if (sortType === 'repos') {
+            return b.public_repos - a.public_repos
+        } else if (sortType === 'gists') {
+            return b.public_gists - a.public_gists
+        } else if (sortType === 'followers') {
+            return b.followers - a.followers
+        } else {
+            return 0
+        }
+    }
+
     // Initial fetch
-    useEffect(() => {
-        _fetchContributors()
+    useEffect(async () => {
+        setIsDataFetched(false)
+        await _fetchContributors()
+        setIsDataFetched(true)
     }, [userLogin, repoName, sortType])
 
     return (
@@ -109,7 +127,12 @@ const RepoPage = (props) => {
                         loader={hasMore && <ListLoader />}
                     >
                         <PseudoListElement />
-                        {displayedData.map((contributor, index) => (
+
+                        {/* Putting loader when list is not ready */}
+                        {!isDataFetched && <ListLoader />}
+
+                        {/* Rendering list */}
+                        {displayedData.sort(_sortFunction).map((contributor, index) => (
                             <UserProfileBar
                                 key={index}
                                 profilePictureSrc={contributor.avatar_url}
