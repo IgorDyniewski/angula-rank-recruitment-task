@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 // Components
 import { Button as ButtonImport } from './Elements'
@@ -56,11 +57,11 @@ const RepositoryTile = (props) => {
                         : props.description.substr(0, 105) + '...'
                     : 'No description'}
             </RepoDescription>
-            <a href={props.htmlUrl} target="blank">
+            <Link href={'/user' + props.htmlUrl.replace('https://github.com', '')} target="blank">
                 <Button icon iconSrc={'/assets/go-to-profile-icon.svg'}>
                     Go to repo
                 </Button>
-            </a>
+            </Link>
         </Main>
     )
 }

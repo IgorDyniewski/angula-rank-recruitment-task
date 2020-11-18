@@ -106,7 +106,7 @@ const _getAllContributorsForRepo = async (repoOwner, remoName) => {
 }
 
 // Getting user's details
-const _getUserDetails = async (login, additionalData) => {
+export const _getUserDetails = async (login, additionalData) => {
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN,
     })

@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 // Components
-import { LogoWrapper, HeaderLogo } from '../../components/Elements'
-import RepositoryTile from '../../components/RepositoryTile'
+import { LogoWrapper, HeaderLogo } from '../../../components/Elements'
+import RepositoryTile from '../../../components/RepositoryTile'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import LongListLoader from '../../components/LongListLoader'
+import LongListLoader from '../../../components/LongListLoader'
 
 // Styled components
 const MainHeader = styled.div`
