@@ -134,6 +134,7 @@ const SelectMain = styled.select`
     background-position-x: calc(100% - 10px);
     background-position-y: 50%;
     margin-top: 15px;
+    width: 200px;
 `
 export const Select = (props) => {
     return <SelectMain {...props}>{props.children}</SelectMain>
